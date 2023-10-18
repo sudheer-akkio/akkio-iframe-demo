@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Embedding an iframe</title>
+</head>
+<body>
+    <h1>Embedded iframe</h1>
+
+    <!-- Create a div element to hold the iframe -->
+    <div id="iframe-container">
+        <!-- The iframe will be inserted here -->
+    </div>
+
+    <script>
+        // Get a reference to the iframe container
+        var iframeContainer = document.getElementById("iframe-container");
+
+        // Create an iframe element
+        var iframe = document.createElement("iframe");
+
+        // Set the source URL for the iframe
+        iframe.src = "https://app.akkio.com/flow/pd3AI3fUVIaz0QyVXMRd/1/report"; // Replace with your desired URL
+        
+        // https://app.akkio.com/flow/pd3AI3fUVIaz0QyVXMRd/chat/4fIPpIuRjeJA4nbrHvSW?data=N4IgLglmA2CmIC4QFEAeBDAtgBziANCABYQDOYA9gE4CeiAZutKbIdgK4BG0EAxomCrtWIACbow6FmAAKVWADcIsAO4ChsAL5A - Chat Explore works
+        // https://app.akkio.com/dashboard/viewer/ABFz8LRZqmcBHTODSQlG - Dashboard works
+        // https://app.akkio.com/flow/pd3AI3fUVIaz0QyVXMRd/1/report - Insights report works
+        // https://app.akkio.com/deployments/6vEaB8s28XW6dJR6qoFk -- DOES NOT WORK as /deployments has not been whitelisted by the team yet
+
+        // Set the width and height of the iframe (optional)
+        iframe.width = "1000";
+        iframe.height = "600";
+
+        // Append the iframe to the container
+        iframeContainer.appendChild(iframe);
+    </script>
+</body>
+</html>
