@@ -2,10 +2,10 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-app.use((req, res, next) => {
-  res.setHeader('Content-Security-Policy', "frame-ancestors 'self' https://www.akkio.com https://lp.akkio.com");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Content-Security-Policy', "frame-ancestors 'self' https://www.akkio.com https://lp.akkio.com");
+//   next();
+// });
 
 // Serve the HTML file
 app.get('/', (req, res) => {

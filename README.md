@@ -25,7 +25,6 @@ node server.js
 
 ## Notes:
 
-- Public Chat Explore, Public Dashboard, and Public Insights Report can be iframed.
+- Public Chat Explore, Public Dashboard, Public Insights Report, and Public Web App can be iframed.
 - You can change the iframe src endpoint in `index.html`. Code is documented on how to do this.
-- `/deployment` is currently not whitelisted, so the public web application cannot be iframed.
 - CSP header in `server.js` does not need to set, but included as an example
