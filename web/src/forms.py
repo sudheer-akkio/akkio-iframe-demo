@@ -54,4 +54,9 @@ class SetupForm(FlaskForm):
         default="https://app.akkio.com/project/pd3AI3fUVIaz0QyVXMRd/1/report",
         validators=[DataRequired()],
     )
+    predict = StringField(
+        label="Predict Endpoint:",
+        default="https://app.akkio.com/deployments/6vEaB8s28XW6dJR6qoFk",
+        validators=[DataRequired()],
+    )
     submit = SubmitField(label="Submit")

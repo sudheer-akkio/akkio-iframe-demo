@@ -84,6 +84,7 @@ def setup_page():
             session["chat_endpoint"] = form.chat_explore.data
             session["dashboard_endpoint"] = form.dashboard.data
             session["insights_report_endpoint"] = form.insights_report.data
+            session["predict_endpoint"] = form.predict.data
 
             flash(
                 "Endpoints Set! This does not guarantee the endpoints will render.",
@@ -109,6 +110,9 @@ def setup_page():
 
     if "insights_report_endpoint" in session:
         form.insights_report.data = session["insights_report_endpoint"]
+
+    if "predict_endpoint" in session:
+        form.predict.data = session["predict_endpoint"]
 
     if form.errors != {}:
         for err_msg in form.errors.values():
@@ -190,6 +194,28 @@ def insights_page():
     return render_template(
         "insights.html",
         insights_report_endpoint=insights_report_endpoint,
+        logo=session.get("logo", None),
+        active_tab=active_tab,
+    )
+
+
+@app.route("/predict", methods=["GET", "POST"])
+def predict_page():
+    if current_user.is_authenticated:
+        predict_endpoint = session.get("predict_endpoint", None)
+
+        if not predict_endpoint:
+            form = SetupForm()
+            predict_endpoint = form.predict.data
+    else:
+        flash("Please login first.", category="danger")
+
+        return redirect(url_for("login_page"))
+
+    active_tab = "predict"
+    return render_template(
+        "predict.html",
+        predict_endpoint=predict_endpoint,
         logo=session.get("logo", None),
         active_tab=active_tab,
     )
