@@ -7,16 +7,15 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
-
 from src.config import DEV_DB, PROD_DB, UPLOAD_FOLDER
 from src.utils import delete_old_files
 
 app = Flask(__name__)  # built-in variable that refers to the local python file
 
-# if os.environ.get("DEBUG") == "1":
-app.config["SQLALCHEMY_DATABASE_URI"] = DEV_DB
-# else:
-#     app.config["SQLALCHEMY_DATABASE_URI"] = PROD_DB
+if os.environ.get("DEBUG") == "1":
+    app.config["SQLALCHEMY_DATABASE_URI"] = DEV_DB
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = PROD_DB
 
 app.config["SECRET_KEY"] = "350d448c9c69285b4bdf8529"
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=1)
