@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}
+    Configure App
+{% endblock %}
+
+{% block content %}
+<body class="text-center">
+    <div class="container">
+        <form method="POST" class="form-signin" enctype="multipart/form-data" style="color:white">
+            {{ form.hidden_tag() }}
+            <br>
+                <h1 class="h3 mb-3 font-weight-normal">
+                    <br>Configure App</br>
+                </h1>
+            </br>
+            <br>
+
+                {{ form.company_name.label() }}
+                {{ form.company_name(class="form-control", placeholder="Company Name") }}
+
+                <br>
+
+                {{ form.logo.label() }}
+                {{ form.logo(class="form-control", placeholder="filename") }}
+
+                <br>
+
+                {{ form.chat_explore.label() }}
+                {{ form.chat_explore(class="form-control", placeholder="Chat Explore") }}
+
+                <br>
+
+                {{ form.dashboard.label() }}
+                {{ form.dashboard(class="form-control", placeholder="Dashboard") }}
+
+                <br>
+
+                {{ form.insights_report.label() }}
+                {{ form.insights_report(class="form-control", placeholder="Insights Report") }}
+
+                <br>
+
+                {{ form.predict.label() }}
+                {{ form.predict(class="form-control", placeholder="Predict") }}
+
+                </br>
+
+            <br>
+
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+
+        </form>
+    </div>
+</body>
+{% endblock %}
