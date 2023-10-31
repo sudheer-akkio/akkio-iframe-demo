@@ -9,7 +9,7 @@ venv/
 web/.venv
 
 # Ignore any .vscode configuration files
-.vscode/
+.vscode
 
 # Ignore any .DS_Store files
 /.DS_Store
