@@ -5,7 +5,7 @@ DEV_DB = "sqlite:///" + os.path.join(os.getcwd(), "src", "akkio.db")
 
 pg_user = "admin"
 pg_pass = "admin"
-pg_db = "snowflake"
+pg_db = "akkio"
 pg_host = "db"  # postgres is going to sit on same production server as flask application, so want localhost
 pg_port = 5432
 

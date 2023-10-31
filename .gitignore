@@ -2,7 +2,7 @@
 web/src/__pycache__/
 
 # Ignore uploaded files
-uploads/
+web/uploads/
 
 # Ignore virtual environment folder
 venv/

@@ -7,5 +7,5 @@ RUN pip install poetry && \
     rm -rf .venv
 COPY . /code/
 RUN poetry install
-CMD python run.py
-# CMD gunicorn --bind 0.0.0.0:8080 -w 3 run:app
+# CMD python run.py
+CMD gunicorn --bind 0.0.0.0:8080 -w 3 run:app

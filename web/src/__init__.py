@@ -31,6 +31,10 @@ login_manager.login_message_category = "info"  # Customizes the flashed messages
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+# Create uploads folder if it doesn't exist
+if not os.path.exists(app.config["UPLOAD_FOLDER"]):
+    os.makedirs(app.config["UPLOAD_FOLDER"])
+
 # Create scheduler to delete old files from upload folder
 scheduler = BackgroundScheduler()
 scheduler.add_job(

@@ -7,6 +7,7 @@ from flask import (
     redirect,
     render_template,
     request,
+    send_from_directory,
     session,
     url_for,
 )
@@ -16,13 +17,26 @@ from werkzeug.utils import secure_filename
 from src import app, db
 from src.forms import LoginForm, RegisterForm, SetupForm
 from src.models import User
+from src.utils import is_supported_image_filename
 
 
-@app.route("/")  # Decorator -- what URL should I navigate and display the HTML code?
+@app.route("/")  # Decorator
 @app.route("/home")  # This is how we can handle multiple routes for the same request
 def home_page():
+    company_name = session.get("company_name", None)
+
+    # Can think about removing the validation as it happens at the forms level. I believe you are guaranteed a non null value.
+    if not company_name:
+        form = SetupForm()
+        company_name = form.company_name.data
+
     active_tab = "home"
-    return render_template("home.html", active_tab=active_tab)
+    return render_template(
+        "home.html",
+        company_name=company_name,
+        logo=session.get("logo", None),
+        active_tab=active_tab,
+    )
 
 
 @app.route("/setup", methods=["GET", "POST"])
@@ -31,7 +45,42 @@ def setup_page():
 
     if current_user.is_authenticated:
         if form.validate_on_submit():
-            # store endpoints in session object to be used to render in separate routes
+            # store configuration params in session object to be used to render in separate routes
+
+            session["company_name"] = form.company_name.data
+
+            # store logo secure filename
+            logo_image = request.files["logo"]
+
+            # SNN TODO: Write validator to make sure the image is either a png, jpeg, tiff
+            if logo_image:
+                if is_supported_image_filename(logo_image.filename):
+                    logo_image.filename = secure_filename(logo_image.filename)
+                    file_path = os.path.join(
+                        app.config["UPLOAD_FOLDER"], logo_image.filename
+                    )
+
+                    # Open the file in write mode and write some content
+                    logo_image.save(file_path)
+
+                    image_url = url_for("uploaded_file", filename=logo_image.filename)
+
+                    form.logo.data = logo_image.filename
+                    session["logo"] = image_url
+
+                    flash("Logo uploaded successfully!", category="success")
+                else:
+                    flash(
+                        "Invalid logo file. Please select a valid image format.",
+                        category="danger",
+                    )
+
+            else:
+                flash(
+                    "No logo file selected.",
+                    category="warning",
+                )
+
             session["chat_endpoint"] = form.chat_explore.data
             session["dashboard_endpoint"] = form.dashboard.data
             session["insights_report_endpoint"] = form.insights_report.data
@@ -46,10 +95,18 @@ def setup_page():
         return redirect(url_for("login_page"))
 
     # Check if session values are set and update form data
+    if "company_name" in session:
+        form.company_name.data = session["company_name"]
+
+    if "logo" in session:
+        form.logo.data = session["logo"]
+
     if "chat_endpoint" in session:
         form.chat_explore.data = session["chat_endpoint"]
+
     if "dashboard_endpoint" in session:
         form.dashboard.data = session["dashboard_endpoint"]
+
     if "insights_report_endpoint" in session:
         form.insights_report.data = session["insights_report_endpoint"]
 
@@ -61,7 +118,15 @@ def setup_page():
             )
 
     active_tab = "setup"
-    return render_template("setup.html", form=form, active_tab=active_tab)
+    return render_template(
+        "setup.html", form=form, logo=session.get("logo", None), active_tab=active_tab
+    )
+
+
+# Route to handle the logo image file uploads
+@app.route("/setup/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 
 @app.route("/analyze", methods=["GET", "POST"])
@@ -81,6 +146,7 @@ def analyze_page():
     return render_template(
         "analyze.html",
         chat_endpoint=chat_endpoint,
+        logo=session.get("logo", None),
         active_tab=active_tab,
     )
 
@@ -102,6 +168,7 @@ def dashboard_page():
     return render_template(
         "dashboard.html",
         dashboard_endpoint=dashboard_endpoint,
+        logo=session.get("logo", None),
         active_tab=active_tab,
     )
 
@@ -123,6 +190,7 @@ def insights_page():
     return render_template(
         "insights.html",
         insights_report_endpoint=insights_report_endpoint,
+        logo=session.get("logo", None),
         active_tab=active_tab,
     )
 
@@ -158,7 +226,12 @@ def register_page():
             )
 
     active_tab = "register"
-    return render_template("register.html", form=form, active_tab=active_tab)
+    return render_template(
+        "register.html",
+        form=form,
+        logo=session.get("logo", None),
+        active_tab=active_tab,
+    )
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -189,7 +262,9 @@ def login_page():
             flash(f"There was an error with logging in: {err_msg}", category="danger")
 
     active_tab = "login"
-    return render_template("login.html", form=form, active_tab=active_tab)
+    return render_template(
+        "login.html", form=form, logo=session.get("logo", None), active_tab=active_tab
+    )
 
 
 @app.route("/logout")

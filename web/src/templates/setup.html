@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    Setup Page
+    Configure App
 {% endblock %}
 
 {% block content %}
@@ -10,10 +10,20 @@
             {{ form.hidden_tag() }}
             <br>
                 <h1 class="h3 mb-3 font-weight-normal">
-                    <br>Setup Endpoints</br>
+                    <br>Configure App</br>
                 </h1>
             </br>
             <br>
+
+                {{ form.company_name.label() }}
+                {{ form.company_name(class="form-control", placeholder="Company Name") }}
+
+                <br>
+
+                {{ form.logo.label() }}
+                {{ form.logo(class="form-control", placeholder="filename") }}
+
+                <br>
 
                 {{ form.chat_explore.label() }}
                 {{ form.chat_explore(class="form-control", placeholder="Chat Explore") }}

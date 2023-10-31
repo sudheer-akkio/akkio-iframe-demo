@@ -34,6 +34,11 @@ class LoginForm(FlaskForm):
 
 
 class SetupForm(FlaskForm):
+    company_name = StringField(
+        label="Company Name:", default="ACME", validators=[DataRequired()]
+    )
+    logo = FileField(label="Company Logo:")
+
     chat_explore = StringField(
         label="Chat Explore Endpoint:",
         default="https://app.akkio.com/project/pd3AI3fUVIaz0QyVXMRd/chat/YB6QBUJgDyvo7B3cJHkn?data=N4IgLglmA2CmIC4QBlYEMAmACAygYwHsAnCAOwHMsARWAWwJABoQALCAZzGIE9EAzNNHaxmABwCuAI2gQ8iMEXEiQGNGDTCwABSKwAbhFgB3eYtgBfIA",
