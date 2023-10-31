@@ -66,11 +66,16 @@ def setup_page():
 
 @app.route("/analyze", methods=["GET", "POST"])
 def analyze_page():
-    chat_endpoint = session.get("chat_endpoint", None)
+    if current_user.is_authenticated:
+        chat_endpoint = session.get("chat_endpoint", None)
 
-    if not chat_endpoint:
-        form = SetupForm()
-        chat_endpoint = form.chat_explore.data
+        if not chat_endpoint:
+            form = SetupForm()
+            chat_endpoint = form.chat_explore.data
+    else:
+        flash("Please login first.", category="danger")
+
+        return redirect(url_for("login_page"))
 
     active_tab = "analyze"
     return render_template(
@@ -82,11 +87,16 @@ def analyze_page():
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard_page():
-    dashboard_endpoint = session.get("dashboard_endpoint", None)
+    if current_user.is_authenticated:
+        dashboard_endpoint = session.get("dashboard_endpoint", None)
 
-    if not dashboard_endpoint:
-        form = SetupForm()
-        dashboard_endpoint = form.dashboard.data
+        if not dashboard_endpoint:
+            form = SetupForm()
+            dashboard_endpoint = form.dashboard.data
+    else:
+        flash("Please login first.", category="danger")
+
+        return redirect(url_for("login_page"))
 
     active_tab = "dashboard"
     return render_template(
@@ -98,11 +108,16 @@ def dashboard_page():
 
 @app.route("/insights", methods=["GET", "POST"])
 def insights_page():
-    insights_report_endpoint = session.get("insights_report_endpoint", None)
+    if current_user.is_authenticated:
+        insights_report_endpoint = session.get("insights_report_endpoint", None)
 
-    if not insights_report_endpoint:
-        form = SetupForm()
-        insights_report_endpoint = form.insights_report.data
+        if not insights_report_endpoint:
+            form = SetupForm()
+            insights_report_endpoint = form.insights_report.data
+    else:
+        flash("Please login first.", category="danger")
+
+        return redirect(url_for("login_page"))
 
     active_tab = "insights"
     return render_template(
