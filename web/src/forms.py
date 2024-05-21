@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
+from src.models import User
 from wtforms import BooleanField, FileField, PasswordField, StringField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
-
-from src.models import User
 
 
 class RegisterForm(FlaskForm):
@@ -41,22 +40,22 @@ class SetupForm(FlaskForm):
 
     chat_explore = StringField(
         label="Chat Explore Endpoint:",
-        default="https://app.akkio.com/project/pd3AI3fUVIaz0QyVXMRd/chat/YB6QBUJgDyvo7B3cJHkn?data=N4IgLglmA2CmIC4QBlYEMAmACAygYwHsAnCAOwHMsARWAWwJABoQALCAZzGIE9EAzNNHaxmABwCuAI2gQ8iMEXEiQGNGDTCwABSKwAbhFgB3eYtgBfIA",
+        default="https://app.akkio.com/reports/jF4vcd53hUYWLkFYzlqj",
         validators=[DataRequired()],
     )
     dashboard = StringField(
         label="Dashboard Endpoint:",
-        default="https://app.akkio.com/dashboard/viewer/RwPGlSOUVs8uRvKkRRJT",
+        default="https://app.akkio.com/dashboard/viewer/6CBz0Q6W0tdSqP6X47Ow",
         validators=[DataRequired()],
     )
     insights_report = StringField(
         label="Insights Report Endpoint:",
-        default="https://app.akkio.com/project/pd3AI3fUVIaz0QyVXMRd/1/report",
+        default="https://app.akkio.com/project/jF4vcd53hUYWLkFYzlqj/1/report",
         validators=[DataRequired()],
     )
     predict = StringField(
         label="Predict Endpoint:",
-        default="https://app.akkio.com/deployments/6vEaB8s28XW6dJR6qoFk",
+        default="https://app.akkio.com/deployments/5LYDSdgLySs6REkfrZ0N",
         validators=[DataRequired()],
     )
     submit = SubmitField(label="Submit")

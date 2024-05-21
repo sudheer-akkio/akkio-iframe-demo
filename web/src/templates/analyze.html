@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="overflow-hidden" id="iframe-container"> 
-        <iframe id="myIframe" src="{{ chat_endpoint }}">
+    <div class="iframe-container" id="iframe-container"> 
+        <iframe id="myIframe" class="resizable-iframe" src="{{ chat_endpoint }}" sandbox="allow-same-origin allow-scripts allow-forms">
         </iframe>
     </div>
 {% endblock %}
