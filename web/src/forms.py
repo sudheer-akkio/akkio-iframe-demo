@@ -38,23 +38,13 @@ class SetupForm(FlaskForm):
     )
     logo = FileField(label="Company Logo:")
 
-    chat_explore = StringField(
-        label="Chat Explore Endpoint:",
+    chat_report = StringField(
+        label="Report Endpoint:",
         default="https://app.akkio.com/reports/jF4vcd53hUYWLkFYzlqj",
         validators=[DataRequired()],
     )
-    dashboard = StringField(
-        label="Dashboard Endpoint:",
-        default="https://app.akkio.com/dashboard/viewer/6CBz0Q6W0tdSqP6X47Ow",
-        validators=[DataRequired()],
-    )
-    insights_report = StringField(
-        label="Insights Report Endpoint:",
-        default="https://app.akkio.com/project/jF4vcd53hUYWLkFYzlqj/1/report",
-        validators=[DataRequired()],
-    )
-    predict = StringField(
-        label="Predict Endpoint:",
+    web_app = StringField(
+        label="Web App Endpoint:",
         default="https://app.akkio.com/deployments/5LYDSdgLySs6REkfrZ0N",
         validators=[DataRequired()],
     )
