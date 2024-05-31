@@ -149,7 +149,7 @@ def analyze_page():
 @app.route("/predict", methods=["GET", "POST"])
 def predict_page():
     if current_user.is_authenticated:
-        web_app_endpoint = session.get("web_app", None)
+        web_app_endpoint = session.get("web_app_endpoint", None)
 
         if not web_app_endpoint:
             form = SetupForm()
