@@ -12,12 +12,11 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required, login_user, logout_user
-from werkzeug.utils import secure_filename
-
 from src import app, db
 from src.forms import LoginForm, RegisterForm, SetupForm
 from src.models import User
 from src.utils import is_supported_image_filename
+from werkzeug.utils import secure_filename
 
 
 @app.route("/")  # Decorator
@@ -81,10 +80,8 @@ def setup_page():
                     category="warning",
                 )
 
-            session["chat_endpoint"] = form.chat_explore.data
-            session["dashboard_endpoint"] = form.dashboard.data
-            session["insights_report_endpoint"] = form.insights_report.data
-            session["predict_endpoint"] = form.predict.data
+            session["chat_report_endpoint"] = form.chat_report.data
+            session["web_app_endpoint"] = form.web_app.data
 
             flash(
                 "Endpoints Set! This does not guarantee the endpoints will render.",
@@ -102,17 +99,11 @@ def setup_page():
     if "logo" in session:
         form.logo.data = session["logo"]
 
-    if "chat_endpoint" in session:
-        form.chat_explore.data = session["chat_endpoint"]
+    if "chat_report_endpoint" in session:
+        form.chat_report.data = session["chat_report_endpoint"]
 
-    if "dashboard_endpoint" in session:
-        form.dashboard.data = session["dashboard_endpoint"]
-
-    if "insights_report_endpoint" in session:
-        form.insights_report.data = session["insights_report_endpoint"]
-
-    if "predict_endpoint" in session:
-        form.predict.data = session["predict_endpoint"]
+    if "web_app_endpoint" in session:
+        form.web_app.data = session["web_app_endpoint"]
 
     if form.errors != {}:
         for err_msg in form.errors.values():
@@ -136,11 +127,11 @@ def uploaded_file(filename):
 @app.route("/analyze", methods=["GET", "POST"])
 def analyze_page():
     if current_user.is_authenticated:
-        chat_endpoint = session.get("chat_endpoint", None)
+        chat_report_endpoint = session.get("chat_report_endpoint", None)
 
-        if not chat_endpoint:
+        if not chat_report_endpoint:
             form = SetupForm()
-            chat_endpoint = form.chat_explore.data
+            chat_report_endpoint = form.chat_report.data
     else:
         flash("Please login first.", category="danger")
 
@@ -149,51 +140,7 @@ def analyze_page():
     active_tab = "analyze"
     return render_template(
         "analyze.html",
-        chat_endpoint=chat_endpoint,
-        logo=session.get("logo", None),
-        active_tab=active_tab,
-    )
-
-
-@app.route("/dashboard", methods=["GET", "POST"])
-def dashboard_page():
-    if current_user.is_authenticated:
-        dashboard_endpoint = session.get("dashboard_endpoint", None)
-
-        if not dashboard_endpoint:
-            form = SetupForm()
-            dashboard_endpoint = form.dashboard.data
-    else:
-        flash("Please login first.", category="danger")
-
-        return redirect(url_for("login_page"))
-
-    active_tab = "dashboard"
-    return render_template(
-        "dashboard.html",
-        dashboard_endpoint=dashboard_endpoint,
-        logo=session.get("logo", None),
-        active_tab=active_tab,
-    )
-
-
-@app.route("/insights", methods=["GET", "POST"])
-def insights_page():
-    if current_user.is_authenticated:
-        insights_report_endpoint = session.get("insights_report_endpoint", None)
-
-        if not insights_report_endpoint:
-            form = SetupForm()
-            insights_report_endpoint = form.insights_report.data
-    else:
-        flash("Please login first.", category="danger")
-
-        return redirect(url_for("login_page"))
-
-    active_tab = "insights"
-    return render_template(
-        "insights.html",
-        insights_report_endpoint=insights_report_endpoint,
+        chat_report_endpoint=chat_report_endpoint,
         logo=session.get("logo", None),
         active_tab=active_tab,
     )
@@ -202,11 +149,11 @@ def insights_page():
 @app.route("/predict", methods=["GET", "POST"])
 def predict_page():
     if current_user.is_authenticated:
-        predict_endpoint = session.get("predict_endpoint", None)
+        web_app_endpoint = session.get("web_app_endpoint", None)
 
-        if not predict_endpoint:
+        if not web_app_endpoint:
             form = SetupForm()
-            predict_endpoint = form.predict.data
+            web_app_endpoint = form.web_app.data
     else:
         flash("Please login first.", category="danger")
 
@@ -215,7 +162,7 @@ def predict_page():
     active_tab = "predict"
     return render_template(
         "predict.html",
-        predict_endpoint=predict_endpoint,
+        web_app_endpoint=web_app_endpoint,
         logo=session.get("logo", None),
         active_tab=active_tab,
     )
